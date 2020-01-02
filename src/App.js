@@ -10,7 +10,7 @@ export default class App extends Component {
           }
         return (
             <div>
-                <Button onClick={success}>Success</Button>
+                <Button type="primary" onClick={success}>Success</Button>
             </div>
         )
     }
