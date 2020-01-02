@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
 
-import { message, Button } from 'antd'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import Login from "./pages/login"
+import Admin from "./pages/admin"
 
 export default class App extends Component {
     
     render() {
-        const success = () => {
-            message.success('This is a success message');
-          }
         return (
             <div>
-                <Button type="primary" onClick={success}>Success</Button>
+                <Router>
+                    <Switch>
+                        <Route path="/login" component={Login}></Route>
+                        <Route path="/admin" component={Admin}></Route>
+                    </Switch>
+                </Router>
             </div>
         )
     }
