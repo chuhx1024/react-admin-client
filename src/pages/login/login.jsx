@@ -12,6 +12,18 @@ class Login extends Component {
       }
     })
   }
+  // 对密码进行验证
+  validatorPwd = (rule, value, callback) => {
+    if (!value) {
+      callback('密码必须输入')
+    } else if (value.length > 12) {
+      callback('密码不能超过12')
+    } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+      callback('密码必须是英文、数字或下划线组成')
+    } else {
+      callback()
+    }
+  }
   render() {
     const { getFieldDecorator } = this.props.form
     return (
@@ -39,7 +51,7 @@ class Login extends Component {
             </Form.Item>
             <Form.Item>
               {getFieldDecorator('password', {
-                rules: [{ required: true, message: '请输入密码!' }],
+                rules: [{ validator:  this.validatorPwd}],
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -50,7 +62,7 @@ class Login extends Component {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" className="login-form-button">
-                Log in
+                登录
               </Button>
             </Form.Item>
           </Form>
