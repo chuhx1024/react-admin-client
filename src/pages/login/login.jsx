@@ -3,6 +3,10 @@ import './login.less'
 import logo from "./imgs/logo.png"
 import { Form, Icon, Input, Button, message } from 'antd'
 import { reqLogin } from '../../api'
+import  memoryUtils  from '../../utils/memoryUtils'
+import  storageUtils  from '../../utils/storageUtils'
+import { Redirect } from 'react-router-dom'
+
 
 class Login extends Component {
   handleSubmit = (e) => {
@@ -14,6 +18,9 @@ class Login extends Component {
         const res = await reqLogin( username, password )
         if (res.status === 0) { // 登录成功
           message.success('登录成功!!!')
+          memoryUtils.user = res.data
+          storageUtils.saveUser(res.data)
+          console.log(memoryUtils.user)
           // 跳转到管理界面  这里使用 replace  而不适用 push  因为 我不用返回了
           this.props.history.replace('/admin')
         } else { // 登录失败
@@ -38,6 +45,10 @@ class Login extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form
+    
+    if (memoryUtils.user && memoryUtils.user._id) {
+      return <Redirect to="/admin"></Redirect>
+    }
     return (
       <div className="login">
         <header className="login-header">
