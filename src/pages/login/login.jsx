@@ -9,6 +9,8 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+      } else {
+        console.log('校验失败')
       }
     })
   }
