@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './login.less'
 import logo from "./imgs/logo.png"
 import { Form, Icon, Input, Button } from 'antd'
+import { reqLogin } from '../../api'
 
 class Login extends Component {
   handleSubmit = (e) => {
@@ -9,6 +10,10 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        let { username, password } = values
+        reqLogin( username, password ).then( (res) => {
+          console.log(res, 90909090000)
+        })
       } else {
         console.log('校验失败')
       }
