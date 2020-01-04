@@ -1,19 +1,24 @@
 import React, { Component } from 'react'
 import './login.less'
 import logo from "./imgs/logo.png"
-import { Form, Icon, Input, Button } from 'antd'
+import { Form, Icon, Input, Button, message } from 'antd'
 import { reqLogin } from '../../api'
 
 class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
         let { username, password } = values
-        reqLogin( username, password ).then( (res) => {
-          console.log(res, 90909090000)
-        })
+        const res = await reqLogin( username, password )
+        if (res.status === 0) { // 登录成功
+          message.success('登录成功!!!')
+          // 跳转到管理界面  这里使用 replace  而不适用 push  因为 我不用返回了
+          this.props.history.replace('/admin')
+        } else { // 登录失败
+          message.error(res.msg)
+        }
       } else {
         console.log('校验失败')
       }
