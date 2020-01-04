@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './login.less'
-import logo from "./imgs/logo.png"
+import logo from "../../assets/imgs/logo.png"
 import { Form, Icon, Input, Button, message } from 'antd'
 import { reqLogin } from '../../api'
 import  memoryUtils  from '../../utils/memoryUtils'
@@ -45,7 +45,7 @@ class Login extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form
-    
+
     if (memoryUtils.user && memoryUtils.user._id) {
       return <Redirect to="/admin"></Redirect>
     }
