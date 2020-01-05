@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import memoryUtils from '../../utils/memoryUtils'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Route, Switch} from 'react-router-dom'
 import { Layout } from 'antd'
 import LeftNav from "../../components/LeftNav/LeftNav"
 import Header from "../../components/Header/Header"
+import Home from "../home/Home"
+import Category from "../category/Category"
+import Product from "../product/Product"
 const { Footer, Sider, Content } = Layout
 const footerStyle = {
   textAlign: 'center'
@@ -22,7 +25,14 @@ export default class admin extends Component {
         </Sider>
         <Layout>
           <Header></Header>
-          <Content style={{backgroundColor: '#FFF'}}>Content</Content>
+          <Content style={{backgroundColor: '#FFF'}}>
+            <Switch>
+              <Route path="/home" component={Home}></Route>
+              <Route path="/category" component={Category}></Route>
+              <Route path="/product" component={Product}></Route>
+              <Redirect to="/home"></Redirect>
+            </Switch>
+          </Content>
           <Footer style={footerStyle}>推荐使用谷歌浏览器,可以获得更佳页面操作体验</Footer>
         </Layout>
       </Layout>
