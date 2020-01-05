@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Category extends Component {
+export default class Product extends Component {
   render() {
     return (
       <div>
-        品类管理
+        商品管理02
       </div>
     )
   }

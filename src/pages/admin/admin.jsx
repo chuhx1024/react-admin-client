@@ -6,7 +6,8 @@ import LeftNav from "../../components/LeftNav/LeftNav"
 import Header from "../../components/Header/Header"
 import Home from "../home/Home"
 import Category from "../category/Category"
-import Product from "../product/Product"
+import Product01 from "../product01/Product01"
+import Product02 from "../product02/Product02"
 const { Footer, Sider, Content } = Layout
 const footerStyle = {
   textAlign: 'center'
@@ -29,7 +30,8 @@ export default class admin extends Component {
             <Switch>
               <Route path="/home" component={Home}></Route>
               <Route path="/category" component={Category}></Route>
-              <Route path="/product" component={Product}></Route>
+              <Route path="/product01" component={Product01}></Route>
+              <Route path="/product02" component={Product02}></Route>
               <Redirect to="/home"></Redirect>
             </Switch>
           </Content>
