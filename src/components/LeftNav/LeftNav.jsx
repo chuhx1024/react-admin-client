@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import './LeftNav.less'
 import logo from '../../assets/imgs/logo.png'
 import { Menu, Icon } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import menuList from "../../config/menuConfig"
 const { SubMenu } = Menu
 
-export default class LeftNav extends Component {
+
+
+class LeftNav extends Component {
+  
   getMenuNodes = (menuList) => {
     return menuList.map(item => {
       if (!item.children) {
@@ -38,6 +41,7 @@ export default class LeftNav extends Component {
 
   }
   render() {
+    const pathname = this.props.location.pathname
     return (
       <div className="left-nav">
         <header className="left-nav-header">
@@ -45,8 +49,8 @@ export default class LeftNav extends Component {
           <h1>硅谷后台</h1>
         </header>
         <Menu
-          defaultSelectedKeys={['home']}
-          defaultOpenKeys={['product']}
+          selectedKeys={[pathname]}
+          defaultOpenKeys={['/products0','/products']}
           mode="inline"
           theme="dark"
         >
@@ -84,4 +88,6 @@ export default class LeftNav extends Component {
     )
   }
 }
+
+export default withRouter(LeftNav)
 
