@@ -1,10 +1,19 @@
 import React, { Component } from 'react'
 import './Header.less'
 import { Button } from 'antd'
+import { reqWeather } from '../../api/index'
 
 
 
 export default class Header extends Component {
+  // 获取天气的数据
+  getWeather = async () => {
+    const res = await reqWeather('北京')
+    console.log(res)
+  }
+  componentDidMount () {
+    this.getWeather()
+  }
   render() {
     return (
       <div className="header">
