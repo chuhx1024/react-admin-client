@@ -3,10 +3,12 @@ import './Header.less'
 import { Button } from 'antd'
 import { reqWeather } from '../../api/index'
 import { formateDate } from '../../utils/dateUtils'
+import { withRouter } from 'react-router-dom'
+import menuList from '../../config/menuConfig'
 
 
 
-export default class Header extends Component {
+class Header extends Component {
   state = {
     weather: '',
     dayPictureUrl: '',
@@ -26,12 +28,34 @@ export default class Header extends Component {
     }, 1000)
 
   }
+  // 获取title
+  getTitle = () => {
+    // 获取当前的请求路径
+    const {pathname} = this.props.location
+    let title
+    if ( pathname === '/') {
+      title = '首页'
+    } else {
+      menuList.forEach(item => {
+        debugger
+        if (item.key === pathname) {
+          title = item.title
+        } else if (item.children) {
+          const cItem = item.children.find(item => item.key === pathname)
+          title = cItem && cItem.title
+        }
+      })
+    }
+    return title 
+  }
   componentDidMount () {
     this.getWeather()
     this.getDate()
+    this.getTitle()
   }
   render() {
     const {weather, dayPictureUrl, time} = this.state
+    const title = this.getTitle()
     return ( 
       <div className="header">
         <div className="header-top">
@@ -39,7 +63,7 @@ export default class Header extends Component {
           <Button type="link">退出</Button>
         </div>
         <div className="header-bottom">
-          <div className="header-bottom-left">首页</div>
+          <div className="header-bottom-left">{title}</div>
           <div className="header-bottom-right">
             <span>{time}</span>
             <img src={dayPictureUrl} alt=""/>
@@ -50,3 +74,4 @@ export default class Header extends Component {
     )
   }
 }
+ export default withRouter(Header)
