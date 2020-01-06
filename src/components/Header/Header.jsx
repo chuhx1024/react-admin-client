@@ -22,9 +22,9 @@ class Header extends Component {
   // 创建时间的定时器
   getDate = () => {
     setInterval(() => {
-      this.setState({
-        time: formateDate(Date.now())
-      })
+      // this.setState({
+      //   time: formateDate(Date.now())
+      // })
     }, 1000)
 
   }
@@ -33,16 +33,23 @@ class Header extends Component {
     // 获取当前的请求路径
     const {pathname} = this.props.location
     let title
+    console.log(pathname, 909090909)
     if ( pathname === '/') {
       title = '首页'
     } else {
       menuList.forEach(item => {
-        debugger
         if (item.key === pathname) {
           title = item.title
         } else if (item.children) {
-          const cItem = item.children.find(item => item.key === pathname)
-          title = cItem && cItem.title
+          const cItem = item.children.find(item => {
+            console.log(item)
+            console.log(item.key)
+            return (item.key === pathname)
+          })
+          if (cItem) {
+
+            title = cItem.title
+          }
         }
       })
     }
