@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import './Header.less'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
 import { reqWeather } from '../../api/index'
 import { formateDate } from '../../utils/dateUtils'
 import { withRouter } from 'react-router-dom'
 import menuList from '../../config/menuConfig'
+import storageUtils from '../../utils/storageUtils'
+import memoryUtils from '../../utils/memoryUtils'
 
 
 
@@ -21,10 +23,10 @@ class Header extends Component {
   }
   // 创建时间的定时器
   getDate = () => {
-    setInterval(() => {
-      // this.setState({
-      //   time: formateDate(Date.now())
-      // })
+    this.intervalId = setInterval(() => {
+      this.setState({
+        time: formateDate(Date.now())
+      })
     }, 1000)
 
   }
@@ -33,7 +35,6 @@ class Header extends Component {
     // 获取当前的请求路径
     const {pathname} = this.props.location
     let title
-    console.log(pathname, 909090909)
     if ( pathname === '/') {
       title = '首页'
     } else {
@@ -42,12 +43,9 @@ class Header extends Component {
           title = item.title
         } else if (item.children) {
           const cItem = item.children.find(item => {
-            console.log(item)
-            console.log(item.key)
             return (item.key === pathname)
           })
           if (cItem) {
-
             title = cItem.title
           }
         }
@@ -55,10 +53,25 @@ class Header extends Component {
     }
     return title 
   }
+  // 退出功能 
+  logout = () => {
+    Modal.confirm({
+      content: '确认退出吗?',
+      onOk: () => {
+        storageUtils.removeUser()
+        memoryUtils.user = {}
+        this.props.history.replace('/login')
+      },
+    })
+  }
   componentDidMount () {
     this.getWeather()
     this.getDate()
     this.getTitle()
+  }
+  componentWillUnmount () {
+    // 清除定时器
+    clearInterval(this.intervalId)
   }
   render() {
     const {weather, dayPictureUrl, time} = this.state
@@ -67,7 +80,7 @@ class Header extends Component {
       <div className="header">
         <div className="header-top">
           <span>欢迎, admin</span>
-          <Button type="link">退出</Button>
+          <Button type="link" onClick={this.logout}>退出</Button>
         </div>
         <div className="header-bottom">
           <div className="header-bottom-left">{title}</div>
