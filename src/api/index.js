@@ -17,3 +17,9 @@ export const reqWeather = (cityName) => {
     })
   })
 }
+// 获取一级 二级分类列表 0 一级分类 一级分类ID 获取二级分类
+export const reqCategorys = (parentId) => ajax('/manage/category/list', {parentId})
+// 添加分类
+export const addCategorys = (parentId,categoryName) => ajax('manage/category/add',{parentId,categoryName},'POST')
+// 更新分类
+export const upDateCategorys= (parentId,categoryName) => ajax('manage/category/update',{parentId,categoryName},'POST')
