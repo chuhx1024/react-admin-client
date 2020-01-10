@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Card, Button, Table, Divider } from 'antd'
+import { Card, Button, Table, Divider, Modal } from 'antd'
 import { reqCategorys } from '../../api'
 
 export default class Category extends Component {
   state = {
-    category: []
+    category: [],
+    visible: false // 控制模态框的显示和隐藏
   }
   // 定义分类列表的子项
   initTableheader = () => {
@@ -36,6 +37,12 @@ export default class Category extends Component {
     let res = await reqCategorys({parentId})
     console.log(res)
   } 
+  // 添加分类
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
 
   componentWillMount () {
     this.initTableheader()
@@ -51,7 +58,7 @@ export default class Category extends Component {
     const title = '一级分类列表'
     // card 的右侧按钮
     const extra = (
-      <Button type="primary" icon="plus">
+      <Button type="primary" icon="plus" onClick={this.showModal}>
         添加
       </Button>
     )
@@ -62,6 +69,16 @@ export default class Category extends Component {
           columns={this.columns} 
           bordered
         />
+        <Modal
+          title="Basic Modal"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
       </Card>
     )
   }
