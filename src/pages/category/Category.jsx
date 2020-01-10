@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Card, Button, Table, Divider, Modal } from 'antd'
-import { reqCategorys } from '../../api'
+import { reqCategorys, addCategorys } from '../../api'
+import AddForm from './addForm'
 
 export default class Category extends Component {
   state = {
     category: [],
-    visible: false // 控制模态框的显示和隐藏
+    visible: false, // 控制模态框的显示和隐藏
+    loading: false
   }
   // 定义分类列表的子项
   initTableheader = () => {
@@ -34,13 +36,25 @@ export default class Category extends Component {
   // 获取分类数据
   reqCategorys = async () => {
     let parentId = 0
-    let res = await reqCategorys({parentId})
+    this.setState({loading: true})
+    let res = await reqCategorys(parentId)
+    this.setState({loading: false})
     console.log(res)
   } 
   // 添加分类
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  }
+  // 添加分类
+  handleOk = () => {
+    this.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        const {parentId,categoryName} = values
+        addCategorys(parentId,categoryName)
+      }
     });
   }
 
@@ -53,7 +67,7 @@ export default class Category extends Component {
 
   render() {
     // 读取状态数据
-    const { category } = this.state
+    const { category, loading } = this.state
     // card 的左侧
     const title = '一级分类列表'
     // card 的右侧按钮
@@ -67,6 +81,7 @@ export default class Category extends Component {
         <Table 
           dataSource={category} 
           columns={this.columns} 
+          loading={loading}
           bordered
         />
         <Modal
@@ -75,9 +90,10 @@ export default class Category extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <AddForm 
+            setForm={(form) => { this.form = form}}
+          >
+          </AddForm>
         </Modal>
       </Card>
     )
