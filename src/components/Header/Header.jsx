@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Header.less'
 import { Button, Modal } from 'antd'
-import { reqWeather } from '../../api/index'
+// import { reqWeather } from '../../api/index'
 import { formateDate } from '../../utils/dateUtils'
 import { withRouter } from 'react-router-dom'
 import menuList from '../../config/menuConfig'
@@ -18,7 +18,9 @@ class Header extends Component {
   }
   // 获取天气的数据
   getWeather = async () => {
-    const { weather, dayPictureUrl } = await reqWeather('北京')
+    // const { weather, dayPictureUrl } = await reqWeather('北京')
+    const { weather, dayPictureUrl } = {weather: 12, dayPictureUrl: 123}
+
     this.setState({weather, dayPictureUrl})
   }
   // 创建时间的定时器

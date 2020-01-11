@@ -27,7 +27,7 @@ export default class Category extends Component {
           <div>
             <Button type="link" onClick= {()=>{this.showUpDataModal(item)}}>修改分类</Button>
             <Divider type="vertical" />
-            <Button type="link">查看子分类</Button>
+            <Button type="link" onClick = {()=>{this.showTwoList(item._id)}}>查看子分类</Button>
           </div>
         ),
       },
@@ -35,8 +35,7 @@ export default class Category extends Component {
   }
   
   // 获取分类数据
-  reqCategorys = async () => {
-    let parentId = 0
+  reqCategorys = async (parentId) => {
     this.setState({loading: true})
     let res = await reqCategorys(parentId)
     this.setState({
@@ -67,11 +66,15 @@ export default class Category extends Component {
   }
   // 添加分类
   handleAdd = () => {
-    this.form.validateFields((err, values) => {
+    this.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const {parentId,categoryName} = values
-        addCategorys(parentId,categoryName)
+        let res = await addCategorys(parentId,categoryName)
+        let {parentId: sp} = res.data
+        console.log(res, 123)
+        this.reqCategorys(sp)
+        this.hideModal()
+
       }
     });
   }
@@ -82,17 +85,21 @@ export default class Category extends Component {
         console.log('Received values of form: ', values);
         let res = await upDateCategorys(this.categoryItem._id,values.categoryName)
         console.log(res)
-        this.reqCategorys()
+        this.reqCategorys(0)
         this.hideModal()
       }
     });
+  }
+  // 查看子分类
+  showTwoList = (id) => {
+    this.reqCategorys(id)
   }
 
   componentWillMount () {
     this.initTableheader()
   }
   componentDidMount () {
-    this.reqCategorys()
+    this.reqCategorys(0)
   }
 
   render() {
@@ -123,6 +130,7 @@ export default class Category extends Component {
         >
           <AddForm 
             setForm={(form) => { this.form = form}}
+            category={category}
           >
           </AddForm>
         </Modal>

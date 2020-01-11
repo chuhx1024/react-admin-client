@@ -8,6 +8,7 @@ class AddForm extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form
+    const {category} = this.props
     return (
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>
         <Form.Item label="所属分类">
@@ -19,7 +20,14 @@ class AddForm extends Component {
               placeholder="Select a option and change input text above"
             >
               <Option value="0">一级分类</Option>
-              <Option value="female">female</Option>
+              {
+                category.map(item => {
+                  return (
+                    <Option key={item._id} value={item._id}>{item.name}</Option>
+                  )
+                })
+              }
+              
             </Select>,
           )}
         </Form.Item>
