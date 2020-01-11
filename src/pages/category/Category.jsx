@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { Card, Button, Table, Divider, Modal } from 'antd'
 import { reqCategorys, addCategorys } from '../../api'
 import AddForm from './addForm'
+import EditForm from './editForm'
 
 export default class Category extends Component {
   state = {
     category: [],
-    visible: false, // 控制模态框的显示和隐藏
+    showStatus: 0, // 控制模态框的显示和隐藏 0 都不显示 1 显示添加 2 显示 修改
     loading: false
   }
   // 定义分类列表的子项
@@ -22,9 +23,9 @@ export default class Category extends Component {
         key: 'age',
         width: 300,
         align: 'center',
-        render: () => (
+        render: (item) => (
           <div>
-            <Button type="link">修改分类</Button>
+            <Button type="link" onClick= {()=>{this.showUpDataModal(item)}}>修改分类</Button>
             <Divider type="vertical" />
             <Button type="link">查看子分类</Button>
           </div>
@@ -38,22 +39,49 @@ export default class Category extends Component {
     let parentId = 0
     this.setState({loading: true})
     let res = await reqCategorys(parentId)
-    this.setState({loading: false})
+    this.setState({
+      loading: false,
+      category: res.data
+    })
     console.log(res)
   } 
-  // 添加分类
-  showModal = () => {
+  // 关闭模态框模态框
+  hideModal = () => {
     this.setState({
-      visible: true,
+      showStatus: 0,
+    });
+  }
+  // 显示添加分类的模态框
+  showAddModal = () => {
+    this.setState({
+      showStatus: 1,
+    });
+  }
+  // 显示修改分类的模态框
+  showUpDataModal = (item) => {
+    console.log(item)
+    this.categoryItem = item
+    this.setState({
+      showStatus: 2,
     });
   }
   // 添加分类
-  handleOk = () => {
+  handleAdd = () => {
     this.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
         const {parentId,categoryName} = values
         addCategorys(parentId,categoryName)
+      }
+    });
+  }
+  // 修改分类
+  handleUpData = () => {
+    this.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        // const {parentId,categoryName} = values
+        // addCategorys(parentId,categoryName)
       }
     });
   }
@@ -67,12 +95,12 @@ export default class Category extends Component {
 
   render() {
     // 读取状态数据
-    const { category, loading } = this.state
+    const { category, loading, showStatus } = this.state
     // card 的左侧
     const title = '一级分类列表'
     // card 的右侧按钮
     const extra = (
-      <Button type="primary" icon="plus" onClick={this.showModal}>
+      <Button type="primary" icon="plus" onClick={this.showAddModal}>
         添加
       </Button>
     )
@@ -82,18 +110,31 @@ export default class Category extends Component {
           dataSource={category} 
           columns={this.columns} 
           loading={loading}
+          rowKey={record=> record._id}
           bordered
         />
         <Modal
-          title="Basic Modal"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          title="添加分类"
+          visible={showStatus === 1}
+          onOk={this.handleAdd}
+          onCancel={this.hideModal}
         >
           <AddForm 
             setForm={(form) => { this.form = form}}
           >
           </AddForm>
+        </Modal>
+        <Modal
+          title="修改分类"
+          visible={showStatus === 2}
+          onOk={this.handleUpData}
+          onCancel={this.hideModal}
+        >
+          <EditForm 
+            categoryName= {this.categoryItem}
+            setForm={form=> this.form = form}
+          >
+          </EditForm>
         </Modal>
       </Card>
     )
