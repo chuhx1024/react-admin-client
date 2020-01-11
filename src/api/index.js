@@ -22,4 +22,4 @@ export const reqCategorys = (parentId) => ajax('/manage/category/list', {parentI
 // 添加分类
 export const addCategorys = (parentId,categoryName) => ajax('manage/category/add',{parentId,categoryName},'POST')
 // 更新分类
-export const upDateCategorys= (parentId,categoryName) => ajax('manage/category/update',{parentId,categoryName},'POST')
+export const upDateCategorys= (categoryId,categoryName) => ajax('manage/category/update',{categoryId,categoryName},'POST')

@@ -7,7 +7,7 @@ class EditForm extends Component {
     console.log(this.props)
   }
   render() {
-    const {name} = this.props.categoryName
+    const {name} = this.props.categoryItem
     const { getFieldDecorator } = this.props.form;
     return (
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>

@@ -12,6 +12,7 @@ class AddForm extends Component {
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>
         <Form.Item label="所属分类">
           {getFieldDecorator('parentId', {
+            initialValue: '0',
             rules: [{ required: true, message: 'Please select your gender!' }],
           })(
             <Select

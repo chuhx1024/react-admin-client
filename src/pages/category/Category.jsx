@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Button, Table, Divider, Modal } from 'antd'
-import { reqCategorys, addCategorys } from '../../api'
+import { reqCategorys, addCategorys, upDateCategorys } from '../../api'
 import AddForm from './addForm'
 import EditForm from './editForm'
 
@@ -77,11 +77,13 @@ export default class Category extends Component {
   }
   // 修改分类
   handleUpData = () => {
-    this.form.validateFields((err, values) => {
+    this.form.validateFields(async (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        // const {parentId,categoryName} = values
-        // addCategorys(parentId,categoryName)
+        let res = await upDateCategorys(this.categoryItem._id,values.categoryName)
+        console.log(res)
+        this.reqCategorys()
+        this.hideModal()
       }
     });
   }
@@ -131,7 +133,7 @@ export default class Category extends Component {
           onCancel={this.hideModal}
         >
           <EditForm 
-            categoryName= {this.categoryItem}
+            categoryItem= {this.categoryItem}
             setForm={form=> this.form = form}
           >
           </EditForm>
