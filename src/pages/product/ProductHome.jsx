@@ -1,8 +1,22 @@
 import React, { Component } from 'react'
-import { Card, Button, Select, Input, Table, Divider, Tag  } from 'antd'
-const { Option } = Select
+import { Card, Button, Select, Input, Table, Divider } from 'antd'
+import { getProductList } from '../../api'
+import {Link} from 'react-router-dom'
+const { Option } = Select 
 
 export default class ProductHome extends Component {
+  // 获取商品列表
+  getProductList = async () => {
+   let res = await getProductList(1, 10)
+   console.log(res)
+  }
+  // 触发添加商品
+  handleAddProduct = () => {
+
+  }
+  componentDidMount () {
+    this.getProductList()
+  }
   
   render() {
     const columns = [
@@ -10,7 +24,6 @@ export default class ProductHome extends Component {
         title: '商品名称',
         dataIndex: 'name',
         key: 'name',
-        render: text => <a>{text}</a>,
       },
       {
         title: '商品描述',
@@ -42,9 +55,9 @@ export default class ProductHome extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a>详情</a>
+            <Button type="link">详情</Button>
             <Divider type="vertical" />
-            <a>修改</a>
+            <Button type="link">修改</Button>
           </span>
         ),
       },
@@ -75,20 +88,18 @@ export default class ProductHome extends Component {
     ];
     const title = (
       <>
-        <Select defaultValue="lucy" style={{ width: 120 }} >
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="disabled" disabled>
-            Disabled
-          </Option>
-          <Option value="Yiminghe">yiminghe</Option>
+        <Select defaultValue="0" style={{ width: 150 }} >
+          <Option value="0">按名称搜索</Option>
+          <Option value="1">按描述搜索</Option>
         </Select>
-        <Input placeholder="Basic usage" style={{ width: 150, margin: "0 10px" }} />
+        <Input placeholder="关键字" style={{ width: 250, margin: "0 10px" }} />
         <Button type="primary">搜索</Button>
       </>
     )
     const extra = (
-      <Button type="primary" icon="plus">添加商品</Button>
+      <Link to="/product/add-edit">
+       <Button type="primary" icon="plus">添加商品</Button>
+      </Link>
     )
     return (
       <Card title={title} extra={extra} bordered={false} style={{ width: '100%' }}>

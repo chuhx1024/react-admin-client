@@ -23,3 +23,5 @@ export const reqCategorys = (parentId) => ajax('/manage/category/list', {parentI
 export const addCategorys = (parentId,categoryName) => ajax('manage/category/add',{parentId,categoryName},'POST')
 // 更新分类
 export const upDateCategorys= (categoryId,categoryName) => ajax('manage/category/update',{categoryId,categoryName},'POST')
+// 获取商品分类列表
+export const getProductList = (pageNum, pageSize) => ajax('manage/product/list',{pageNum, pageSize})
