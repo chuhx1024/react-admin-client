@@ -16,22 +16,16 @@ const menuList = [
       },
       {
         title: '商品管理',
-        key: '/products0',
+        key: '/product',
         icon: 'tool',
-        children: [
-          {
-            title: '商品管理01',
-            key: '/product01',
-            icon: 'bars',
-          },
-          {
-            title: '商品管理02',
-            key: '/product02',
-            icon: 'bars',
-          },
-        ]
+       
       }
     ]
-  }
+  },
+  {
+    title: '用户管理',
+    key: '/user',
+    icon: 'user',
+  },
 ]
 export default menuList

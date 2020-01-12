@@ -6,8 +6,8 @@ import LeftNav from "../../components/LeftNav/LeftNav"
 import Header from "../../components/Header/Header"
 import Home from "../home/Home"
 import Category from "../category/Category"
-import Product01 from "../product01/Product01"
-import Product02 from "../product02/Product02"
+import Product from "../product/Product"
+import User from "../user/user"
 const { Footer, Sider, Content } = Layout
 const footerStyle = {
   textAlign: 'center'
@@ -26,12 +26,12 @@ export default class admin extends Component {
         </Sider>
         <Layout>
           <Header></Header>
-          <Content style={{margin: '20px',backgroundColor: '#FFF'}}>
+          <Content style={{margin: '20px',backgroundColor: '#FFF', height: '100%'}}>
             <Switch>
               <Route path="/home" component={Home}></Route>
               <Route path="/category" component={Category}></Route>
-              <Route path="/product01" component={Product01}></Route>
-              <Route path="/product02" component={Product02}></Route>
+              <Route path="/product" component={Product}></Route>
+              <Route path="/user" component={User}></Route>
               <Redirect to="/home"></Redirect>
             </Switch>
           </Content>
