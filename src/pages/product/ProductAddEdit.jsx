@@ -36,27 +36,27 @@ class ProductAddEdit extends Component {
       options
     })
   }
-  loadData = selectedOptions => {
+  loadData = async selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 
     // load options lazily
-    setTimeout(() => {
-      targetOption.loading = false;
-      targetOption.children = [
-        {
-          label: `${targetOption.label} Dynamic 1`,
-          value: 'dynamic1',
-        },
-        {
-          label: `${targetOption.label} Dynamic 2`,
-          value: 'dynamic2',
-        },
-      ];
-      this.setState({
-        options: [...this.state.options],
-      });
-    }, 1000);
+    targetOption.loading = false;
+    console.log(targetOption, 1)
+    let {value} = targetOption
+    console.log(value, 2)
+    let res = await reqCategorys(value)
+    console.log(res, 4)
+    let children = res.data.map(item => {
+      return ({
+        label: item.name,
+        value: item._id,
+      })
+    })
+    targetOption.children = children
+    this.setState({
+      options: [...this.state.options],
+    });
   }
   componentDidMount () {
     this.getOptions('0')
