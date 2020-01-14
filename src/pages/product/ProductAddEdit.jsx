@@ -1,8 +1,66 @@
 import React, { Component } from 'react'
-import { Card, Icon, Form, Input, Select, Button} from 'antd'
-const { Option } = Select
+import { Card, Icon, Form, Input, Button , Cascader } from 'antd'
+// const { Option } = Select
+import { reqCategorys } from '../../api'
+
+const options = [
+  {
+    value: 'zhejiang',
+    label: 'Zhejiang',
+    isLeaf: false,
+  },
+  {
+    value: 'jiangsu',
+    label: 'Jiangsu',
+    isLeaf: false,
+  },
+];
 
 class ProductAddEdit extends Component {
+  state = {
+    options,
+  }
+  // 获取品类级联选择器数据 
+  getOptions = async (id) => {
+    let res = await reqCategorys(id)
+    console.log(res, 12388)
+    let { data } = res
+    let options = data.map( item => {
+      return ({
+        value: item._id,
+        label: item.name,
+        isLeaf: false,
+      })
+    })
+    this.setState({
+      options
+    })
+  }
+  loadData = selectedOptions => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+
+    // load options lazily
+    setTimeout(() => {
+      targetOption.loading = false;
+      targetOption.children = [
+        {
+          label: `${targetOption.label} Dynamic 1`,
+          value: 'dynamic1',
+        },
+        {
+          label: `${targetOption.label} Dynamic 2`,
+          value: 'dynamic2',
+        },
+      ];
+      this.setState({
+        options: [...this.state.options],
+      });
+    }, 1000);
+  }
+  componentDidMount () {
+    this.getOptions('0')
+  }
   render() {
     const title = (
       <>
@@ -43,20 +101,11 @@ class ProductAddEdit extends Component {
             )}
           </Form.Item>
           <Form.Item label="所属分类">
-          {getFieldDecorator('parentId', {
-            initialValue: '0',
-            rules: [{ required: true, message: 'Please select your gender!' }],
-          })(
-            <Select
-              placeholder="Select a option and change input text above"
-            >
-              <Option value="0">一级分类</Option>
-              <Option value="1">一级分类</Option>
-              <Option value="2">一级分类</Option>
-              
-            </Select>,
-          )}
-        </Form.Item>
+          <Cascader
+            options={this.state.options}
+            loadData={this.loadData}
+          />
+          </Form.Item>
         </Form>
       </Card>
     )
