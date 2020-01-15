@@ -25,3 +25,6 @@ export const addCategorys = (parentId,categoryName) => ajax('manage/category/add
 export const upDateCategorys= (categoryId,categoryName) => ajax('manage/category/update',{categoryId,categoryName},'POST')
 // 获取商品分类列表
 export const getProductList = (pageNum, pageSize) => ajax('manage/product/list',{pageNum, pageSize})
+// 添加商品
+export const addProduct = (categoryId, pCategoryId, name, desc, price, detail, imgs) => ajax('/manage/product/add',{categoryId, pCategoryId, name, desc, price, detail, imgs},'POST')
+  

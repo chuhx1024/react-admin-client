@@ -5,10 +5,16 @@ import {Link} from 'react-router-dom'
 const { Option } = Select 
 
 export default class ProductHome extends Component {
+  state = {
+    list: []
+  }
   // 获取商品列表
   getProductList = async () => {
    let res = await getProductList(1, 10)
-   console.log(res)
+   let { list } = res.data
+   this.setState({
+     list
+   })
   }
   // 触发添加商品
   handleAddProduct = () => {
@@ -27,12 +33,12 @@ export default class ProductHome extends Component {
       },
       {
         title: '商品描述',
-        dataIndex: 'age',
+        dataIndex: 'desc',
         key: 'age',
       },
       {
         title: '价格',
-        dataIndex: 'address',
+        dataIndex: 'price',
         key: 'address',
       },
       {
@@ -62,30 +68,9 @@ export default class ProductHome extends Component {
         ),
       },
     ];
+
+    const { list } = this.state
     
-    const data = [
-      {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-      },
-      {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-      },
-    ];
     const title = (
       <>
         <Select defaultValue="0" style={{ width: 150 }} >
@@ -103,7 +88,7 @@ export default class ProductHome extends Component {
     )
     return (
       <Card title={title} extra={extra} bordered={false} style={{ width: '100%' }}>
-        <Table columns={columns} dataSource={data} bordered />
+        <Table columns={columns} dataSource={list} bordered />
       </Card>
     )
   }

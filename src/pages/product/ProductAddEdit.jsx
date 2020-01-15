@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Icon, Form, Input, Button , Cascader } from 'antd'
-import { reqCategorys } from '../../api'
+import { reqCategorys, addProduct } from '../../api'
+const { TextArea } = Input
 
 const options = [
   {
@@ -62,6 +63,18 @@ class ProductAddEdit extends Component {
       options: [...this.state.options],
     })
   }
+  // 提交事件
+  commitBill = (e) => {
+    e.preventDefault()
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values)
+        let {categoryIds:[pCategoryId, categoryId], name, desc, price, detail, imgs} = values
+        let result = await addProduct(categoryId, pCategoryId, name, desc, price, detail, imgs)
+        console.log(result)
+      }
+    })
+  }
   componentDidMount () {
     this.getOptions('0')
   }
@@ -77,40 +90,40 @@ class ProductAddEdit extends Component {
       <Card title={title}>
         <Form  className="login-form" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           <Form.Item label="商品名称">
-            {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+            {getFieldDecorator('name', {
+              rules: [{ required: true, message: '请输入商品名称' }],
             })(
               <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Username"
+                placeholder="请输入商品名称"
               />,
             )}
           </Form.Item>
           <Form.Item label="商品描述">
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+            {getFieldDecorator('desc', {
+              rules: [{ required: true, message: '请输入商品描述' }],
             })(
-              <Input
-                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                type="password"
-                placeholder="Password"
-              />,
+              <TextArea rows={4} />
             )}
           </Form.Item>
           <Form.Item label="商品价格">
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+            {getFieldDecorator('price', {
+              rules: [{ required: true, message: '请输入商品价格' }],
             })(
               <Input type="number" addonAfter="元" />,
             )}
           </Form.Item>
           <Form.Item label="所属分类">
-          <Cascader
-            options={this.state.options}
-            loadData={this.loadData}
-          />
+            {getFieldDecorator('categoryIds', {
+              rules: [{ required: true, message: '请输入商品名称' }],
+            })(
+              <Cascader
+                options={this.state.options}
+                loadData={this.loadData}
+              />
+            )}
           </Form.Item>
         </Form>
+        <Button onClick={this.commitBill} type="primary">提交</Button>
       </Card>
     )
   }
