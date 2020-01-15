@@ -23,18 +23,23 @@ class ProductAddEdit extends Component {
   // 获取品类级联选择器数据 
   getOptions = async (id) => {
     let res = await reqCategorys(id)
-    console.log(res, 12388)
     let { data } = res
-    let options = data.map( item => {
-      return ({
-        value: item._id,
-        label: item.name,
-        isLeaf: false,
+    if (id === '0') {  // 一级分类
+      let options = data.map( item => {
+        return ({
+          value: item._id,
+          label: item.name,
+          isLeaf: false,
+        })
       })
-    })
-    this.setState({
-      options
-    })
+      this.setState({
+        options
+      })
+    } else {  // 二级列表
+      return data
+    }
+    
+   
   }
   loadData = async selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
@@ -42,12 +47,9 @@ class ProductAddEdit extends Component {
 
     // load options lazily
     targetOption.loading = false;
-    console.log(targetOption, 1)
     let {value} = targetOption
-    console.log(value, 2)
-    let res = await reqCategorys(value)
-    console.log(res, 4)
-    let children = res.data.map(item => {
+    let data = await this.getOptions(value)
+    let children = data.map(item => {
       return ({
         label: item.name,
         value: item._id,
