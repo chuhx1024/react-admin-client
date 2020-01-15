@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Card, Icon, Form, Input, Button , Cascader } from 'antd'
-// const { Option } = Select
 import { reqCategorys } from '../../api'
 
 const options = [
@@ -43,22 +42,25 @@ class ProductAddEdit extends Component {
   }
   loadData = async selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
-    targetOption.loading = true;
-
+    targetOption.loading = true
     // load options lazily
-    targetOption.loading = false;
     let {value} = targetOption
     let data = await this.getOptions(value)
-    let children = data.map(item => {
-      return ({
-        label: item.name,
-        value: item._id,
+    if (data.length > 0) {
+      let children = data.map(item => {
+        return ({
+          label: item.name,
+          value: item._id,
+        })
       })
-    })
-    targetOption.children = children
+      targetOption.children = children
+    } else {
+      targetOption.isLeaf = true
+    }
+    targetOption.loading = false
     this.setState({
       options: [...this.state.options],
-    });
+    })
   }
   componentDidMount () {
     this.getOptions('0')
