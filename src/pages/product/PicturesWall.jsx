@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Upload, Icon, Modal } from 'antd'
+import { deleteImg } from '../../api'
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -26,8 +27,11 @@ export default class PicturesWall extends Component {
   getImgsNameList = () => {
     return this.state.fileList.map(item => item.name)
   }
-  handleCancel = () => this.setState({ previewVisible: false });
-
+  // 取消预览
+  handleCancel = () => {
+    this.setState({ previewVisible: false })
+  }
+  // 预览图片
   handlePreview = async file => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -38,11 +42,19 @@ export default class PicturesWall extends Component {
       previewVisible: true,
     });
   }
-
-  handleChange = ({ fileList }) => {
-    let file = fileList[fileList.length -1]
+  // 有文件上传时触发
+  handleChange = async ({ file, fileList }) => {
+    // 上传成功触发
     if (file.status === 'done') {
+      file = fileList[fileList.length -1]
       file.name = file.response.data.name
+    }
+    // 删除时触发
+    if (file.status === 'removed') {
+      console.log(file, 995)
+      console.log(fileList, 996)
+      let res = await deleteImg(file.name)
+      console.log(res)
     }
     this.setState({ fileList })
   }

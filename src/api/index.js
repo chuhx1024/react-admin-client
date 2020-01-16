@@ -29,3 +29,5 @@ export const getProductList = (pageNum, pageSize) => ajax('manage/product/list',
 export const addProduct = (categoryId, pCategoryId, name, desc, price, detail, imgs) => ajax('/manage/product/add',{categoryId, pCategoryId, name, desc, price, detail, imgs},'POST')
 // 更新商品
 export const updateProduct = (_id, categoryId, pCategoryId, name, desc, price, detail, imgs) => ajax('/manage/product/update',{_id, categoryId, pCategoryId, name, desc, price, detail, imgs},'POST')
+// 删除图片
+export const deleteImg = (name) => ajax('/manage/img/delete',{name},'POST')
