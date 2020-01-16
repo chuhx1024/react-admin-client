@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Upload, Icon, Modal } from 'antd'
 import { deleteImg } from '../../api'
+import PropTypes from 'prop-types';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -12,18 +13,31 @@ function getBase64(file) {
 }
 
 export default class PicturesWall extends Component {
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList: [
-      // {
-      //   uid: '-1',
-      //   name: 'image.png',
-      //   status: 'done',
-      //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      // }
-    ],
-  };
+  static propTypes= {
+    imgs: PropTypes.array
+  }
+  
+ 
+  constructor (props) {
+    super(props)
+    let fileList = []
+    const { imgs } =this.props
+    if (imgs && imgs.length > 0) {
+      fileList = imgs.map((item, index) => {
+        return {
+          uid: -index,
+          name: item,
+          status: 'done',
+          url: `http://localhost:5000/upload/${item}`
+        }
+      })
+    }
+    this.state = {
+      previewVisible: false,
+      previewImage: '',
+      fileList
+    }
+  }
   getImgsNameList = () => {
     return this.state.fileList.map(item => item.name)
   }
@@ -58,6 +72,9 @@ export default class PicturesWall extends Component {
     }
     this.setState({ fileList })
   }
+  componentDidMount () {
+
+  }
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
@@ -85,4 +102,7 @@ export default class PicturesWall extends Component {
     );
   }
 }
+// PicturesWall.propTypes = {
+//   imgs: PropTypes.bool
+// }
 

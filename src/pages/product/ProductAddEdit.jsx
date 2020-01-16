@@ -172,6 +172,7 @@ class ProductAddEdit extends Component {
           <Form.Item label="商品图片">
             <PicturesWall
               ref={this.pw}
+              imgs={product.imgs}
             />
           </Form.Item>
         </Form>
