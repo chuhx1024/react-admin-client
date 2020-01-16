@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Icon, Form, Input, Button , Cascader } from 'antd'
 import { reqCategorys, addProduct, updateProduct } from '../../api'
 import PicturesWall from './PicturesWall'
+import RichTextEdit from './RichTextEdit'
 const { TextArea } = Input
 
 
@@ -174,6 +175,9 @@ class ProductAddEdit extends Component {
               ref={this.pw}
               imgs={product.imgs}
             />
+          </Form.Item>
+          <Form.Item label="商品详情">
+            <RichTextEdit />
           </Form.Item>
         </Form>
         <Button onClick={this.commitBill} type="primary">提交</Button>
