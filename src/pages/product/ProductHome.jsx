@@ -59,11 +59,11 @@ export default class ProductHome extends Component {
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (row) => (
           <span>
             <Button type="link">详情</Button>
             <Divider type="vertical" />
-            <Button type="link">修改</Button>
+            <Button type="link" onClick={() => {this.props.history.push('/product/add-edit', row)}}>修改</Button>
           </span>
         ),
       },
