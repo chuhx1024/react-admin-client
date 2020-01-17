@@ -26,6 +26,7 @@ class ProductAddEdit extends Component {
   constructor (props) {
     super(props)
     this.pw = React.createRef()
+    this.rte = React.createRef()
   }
   // 获取品类级联选择器数据 
   getOptions = async (id) => {
@@ -86,7 +87,7 @@ class ProductAddEdit extends Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         const {isUpdata, product} = this
-        let {categoryIds:[pCategoryId, categoryId], name, desc, price, detail} = values
+        let {categoryIds:[pCategoryId, categoryId], name, desc, price} = values
         // 整理级联的数据 
         if (!categoryId) {
           categoryId = pCategoryId
@@ -94,6 +95,8 @@ class ProductAddEdit extends Component {
         }
         // 获取图片数据
         let imgs = this.pw.current.getImgsNameList()
+        // 获取富文本的数据
+        let detail = this.rte.current.getDetail()
         let result
         if (isUpdata) {
           result = await updateProduct(product._id, categoryId, pCategoryId, name, desc, price, detail, imgs)
@@ -177,7 +180,10 @@ class ProductAddEdit extends Component {
             />
           </Form.Item>
           <Form.Item label="商品详情">
-            <RichTextEdit />
+            <RichTextEdit
+              ref={this.rte}
+              detail={product.detail}
+            />
           </Form.Item>
         </Form>
         <Button onClick={this.commitBill} type="primary">提交</Button>
