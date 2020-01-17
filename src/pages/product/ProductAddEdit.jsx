@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Icon, Form, Input, Button , Cascader } from 'antd'
+import { Card, Icon, Form, Input, Button , Cascader, message } from 'antd'
 import { reqCategorys, addProduct, updateProduct } from '../../api'
 import PicturesWall from './PicturesWall'
 import RichTextEdit from './RichTextEdit'
@@ -100,9 +100,12 @@ class ProductAddEdit extends Component {
         let result
         if (isUpdata) {
           result = await updateProduct(product._id, categoryId, pCategoryId, name, desc, price, detail, imgs)
+          message.success('修改成功!')
         } else {
           result = await addProduct(categoryId, pCategoryId, name, desc, price, detail, imgs)
+          message.success('保存成功!')
         }
+        this.props.history.goBack()
         console.log(result)
       }
     })
