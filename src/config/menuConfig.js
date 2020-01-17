@@ -27,5 +27,10 @@ const menuList = [
     key: '/user',
     icon: 'user',
   },
+  {
+    title: '角色管理',
+    key: '/role',
+    icon: 'crown',
+  },
 ]
 export default menuList
