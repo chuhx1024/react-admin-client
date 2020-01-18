@@ -31,3 +31,7 @@ export const addProduct = (categoryId, pCategoryId, name, desc, price, detail, i
 export const updateProduct = (_id, categoryId, pCategoryId, name, desc, price, detail, imgs) => ajax('/manage/product/update',{_id, categoryId, pCategoryId, name, desc, price, detail, imgs},'POST')
 // 删除图片
 export const deleteImg = (name) => ajax('/manage/img/delete',{name},'POST')
+// 添加角色
+export const addRole = (roleName) => ajax('/manage/role/add',{roleName},'POST')
+// 获取角色列表
+export const getRoleList = () => ajax('/manage/role/list')

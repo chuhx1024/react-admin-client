@@ -23,6 +23,7 @@ export default class ProductHome extends Component {
   componentDidMount () {
     this.getProductList()
   }
+  // chushi
   
   render() {
     const columns = [
@@ -88,7 +89,12 @@ export default class ProductHome extends Component {
     )
     return (
       <Card title={title} extra={extra} bordered={false} style={{ width: '100%' }}>
-        <Table columns={columns} dataSource={list} bordered />
+        <Table
+          columns={columns} 
+          dataSource={list} 
+          bordered
+          pagination={{defaultPageSize: 5}}
+        />
       </Card>
     )
   }
